@@ -2,36 +2,41 @@
 {% load static %}
 {% block content %}
 <body>
-    <div class = "container"><center>
-      <center><h1>{{title}}</h1></center>
-      <div class="my-5 embed-responsive embed-responsive-16by9">
-        <iframe class="embed-responsive-item" src={{embed}} allowfullscreen></iframe>
+    <div class = "card container"><center>
+      <center><h2 class = "card-title" >{{title}}</h2></center>
+      <div class=" embed-responsive embed-responsive-16by9">
+        {% comment %} <iframe width="560" height="315" src="{{ thumbnail_url }}" frameborder="0" allowfullscreen></iframe> {% endcomment %}
+        <img src="{{ thumbnail_url }}" alt="{{ embed }}">
+        {% comment %}<iframe width="560" height="315" class="embed-responsive-item" src="{{ thumbnail_url }}" alt={{embed}} frameborder="0" allowfullscreen></iframe> {% endcomment %}
+        <center>
+        <table class="table" style="text-align":"center";>
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Size</th>
+              <th scope="col">Quality</th>
+              <th scope="col">Type</th>
+              <th scope="col">Download</th>
+            </tr>
+          </thead>
+          {% for i in video %}
+          <tbody>
+            <tr>
+              <th>{{i.filesize}}</th>
+              <td>{{i.resolution}}</td>
+              <td>{{i.type}}</td>
+              <td>
+                <form action = "{%url "youtube:complete" i.resolution%}" method = "POST">
+                  {% csrf_token %}
+                  <input type = "submit" class = "btn btn-success" value = "Download">
+                </form>
+              </td>
+            </tr>
+          </tbody>
+          {% endfor %}
+        </table>
+      
       </div>
-    </div></center>
-    <table class="table">
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col">Size</th>
-          <th scope="col">Quality</th>
-          <th scope="col">Type</th>
-          <th scope="col">Download</th>
-        </tr>
-      </thead>
-      {% for i in video %}
-      <tbody>
-        <tr>
-          <th>{{i.filesize}}</th>
-          <td>{{i.resolution}}</td>
-          <td>{{i.type}}</td>
-          <td>
-            <form action = "{%url "youtube:complete" i.resolution%}" method = "POST">
-              {% csrf_token %}
-              <input type = "submit" class = "btn btn-success" value = "Download">
-            </form>
-          </td>
-        </tr>
-      </tbody>
-      {% endfor %}
-    </table>
+    </div>
+  </center>
 </body>
 {% endblock content %}

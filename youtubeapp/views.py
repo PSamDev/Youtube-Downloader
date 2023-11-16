@@ -14,7 +14,8 @@ def download(request):
     video = yt.streams.filter(progressive=True).all()
     embed_link = url.replace("watch?v", "embed/")
     Title = yt.title
-    context = {"video":video, "embed":embed_link, "title":Title}
+    thumbnail_url = yt.thumbnail_url
+    context = {"video":video, "embed":embed_link, "title":Title, "thumbnail_url": thumbnail_url}
     
     return render(request, "download.html", context=context)
 
